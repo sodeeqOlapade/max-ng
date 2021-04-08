@@ -7,7 +7,9 @@ export class AppService {
     try {
       const requestUrl = "https://swapi.dev/api/films/"
       const response = await axios.get(requestUrl);
-      return response.data.results;
+      return response.data.results.sort(function(a, b) {
+        return new Date(b.created).valueOf() - new Date(a.created).valueOf();
+      });
     } catch (error) {
       console.error(error);
     }
