@@ -23,6 +23,7 @@ export class AppController {
   @ApiResponse({ status: HttpStatus.OK, type: GetCharactersDto, description: "Characters successfully retrieved!" })
   async getCharacters(): Promise<ICustomResponse> {
     const characters =  await this.appService.getCharacters();
+    // console.log(characters)
     return customResponse(HttpStatus.OK, "Successful", {
       count: characters.length,
       characters: characters.map(character => new GetCharactersDto(character)),

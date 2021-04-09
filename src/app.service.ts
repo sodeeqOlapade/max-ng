@@ -23,9 +23,19 @@ export class AppService {
 
   async getCharacters(): Promise<ICharacter[]> {
     try {
-      const requestUrl = `${this.BASE_URL}people/`
+      const requestUrl = `${this.BASE_URL}people/`;
+      let results = [];
       const response = await axios.get(requestUrl);
-      return response.data.results;
+      let nextPage = 2;
+      
+      results = [...results, ...response.data.results];
+      while(nextPage <= Math.ceil(response.data.count/response.data.results.length)){
+        const newResponse = await axios.get(`${this.BASE_URL}people/?page=${nextPage}`);
+        results = [...results, ...newResponse.data.results];
+        console.log(results.length, newResponse.data.results.length)
+        nextPage++;
+      }
+      return results;
     } catch (error) {
       console.error(error);
     }
