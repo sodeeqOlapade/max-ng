@@ -8,7 +8,7 @@ export class GetMoviesDto {
     this.title = data.title;
     this.openingCrawl = data.opening_crawl;
     this.commentCount = data.commentCount || 0;
-    this.created = data.created;
+    this.realeaseDate = data.release_date;
 
   }
 
@@ -41,9 +41,9 @@ export class GetMoviesDto {
     commentCount: number;
 
     @ApiProperty({
-      name: "created",
+      name: "realeaseDate",
       type: String,
-      description: "Movie date of creation",
+      description: "Movie date of release",
     })
-    created: string;
+    realeaseDate: string;
 }
