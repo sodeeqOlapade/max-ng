@@ -18,6 +18,7 @@ import Comment from "../entities/comments.entitie"
                 Comment
               ],
               synchronize: true,
+              ssl: true
             })
           }),
     ]
