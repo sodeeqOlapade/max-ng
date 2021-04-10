@@ -67,7 +67,6 @@ export class AppController {
   @ApiResponse({ status: HttpStatus.CREATED, type: GetCommentDto, description: "Branch successfully created!" })
   async createComment(@Body(new JoiValidationPipe(createCommentSchema)) createCommentDto: CreateCommentDto, @Req() request: Request): Promise<ICustomResponse>{
     const {clientIp} = get_ip(request);
-    console.log('clientIp: ', clientIp);
     const newComment: Comment = await this.appService.createComment({...createCommentDto, clientIp});
     return customResponse(HttpStatus.OK, "Successful", new GetCommentDto(newComment));
   }
