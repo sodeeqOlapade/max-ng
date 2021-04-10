@@ -8,6 +8,7 @@ import Comment from "../entities/comments.entitie"
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => ({
+              url: configService.get('POSTGRES_URL'),
               type: 'postgres',
               host: configService.get('POSTGRES_HOST'),
               port: configService.get('POSTGRES_PORT'),
@@ -18,6 +19,9 @@ import Comment from "../entities/comments.entitie"
                 Comment
               ],
               synchronize: true,
+              ssl: {
+                rejectUnauthorized: false
+              }
             })
           }),
     ]
