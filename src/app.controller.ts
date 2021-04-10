@@ -1,10 +1,14 @@
-import { Controller, Get, HttpStatus, Req } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Req } from '@nestjs/common';
 import { ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { Request } from "express";
 import { GetCharactersDto } from './dto/get-characters.dto';
 import { GetMoviesDto } from './dto/get-movies.dto';
 import { customResponse, ICustomResponse } from './utils/response';
+import { createCommentSchema } from './dto/comment.schema';
+import { JoiValidationPipe } from './utils/joi-validation.pipe';
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { GetCommentDto } from './dto/get-branch.dto';
 
 @Controller()
 export class AppController {
@@ -48,7 +52,6 @@ export class AppController {
   async getCharacters(@Req() request: Request): Promise<ICustomResponse> {
     console.log('...in', request.query)
     const characters =  await this.appService.getCharacters(request.query);
-    // console.log(characters)
     return customResponse(HttpStatus.OK, "Successful", {
       totalCount: characters.length,
       totalHeightIncm: characters.map(character => +character.height).reduce((a, b) => a + b, 0),
@@ -56,6 +59,15 @@ export class AppController {
       characters: characters.map(character => new GetCharactersDto(character)),
     })
   }
+
+
+  @Post("comments")
+  @ApiResponse({ status: HttpStatus.CREATED, type: GetCommentDto, description: "Branch successfully created!" })
+  async createComment(@Body(new JoiValidationPipe(createCommentSchema)) createCommentDto: CreateCommentDto, @Req() request: Request): Promise<ICustomResponse>{
+    const newComment: Comment = await this.appService.createComment(createCommentDto);
+    return customResponse(HttpStatus.OK, "Successful", new GetCommentDto(newComment));
+  }
+
 
 
   // @Get("characters")

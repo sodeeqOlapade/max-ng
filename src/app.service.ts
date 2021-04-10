@@ -1,9 +1,17 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
+import { Repository } from 'typeorm';
 import { ICharacter } from './models/characters.interface';
 import { IMovies } from './models/movies.interface';
+import  Comment  from './entities/comments.entitie';
 @Injectable()
 export class AppService {
+
+  constructor(
+    @InjectRepository(Comment)
+    private commentRepository: Repository<Comment>,
+  ) {}
 
   BASE_URL: string = "https://swapi.dev/api/";
 
@@ -23,7 +31,6 @@ export class AppService {
 
   async getCharacters(query: any): Promise<ICharacter[]> {
     try {
-      console.log('QUERY: ', query)
       const requestUrl = `${this.BASE_URL}people/`;
       let results = [];
       const response = await axios.get(requestUrl);
@@ -59,6 +66,15 @@ export class AppService {
       return results;
     } catch (error) {
       console.error(error);
+    }
+  }
+
+
+  async createComment(body){
+    try {
+      return this.commentRepository.save(body);
+    } catch (error) {
+      console.log('Error: ', error);
     }
   }
 

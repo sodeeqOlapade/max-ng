@@ -4,6 +4,8 @@ import { AppController } from './app.controller';
 import * as Joi from '@hapi/joi';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import Comment from './entities/comments.entitie';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { DatabaseModule } from './database/database.module';
         PORT: Joi.number(),
       })
     }),
+    TypeOrmModule.forFeature([Comment]),
     DatabaseModule
   ],
   controllers: [AppController],

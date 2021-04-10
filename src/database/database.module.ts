@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
+import Comment from "../entities/comments.entitie"
 @Module({
     imports: [
         TypeOrmModule.forRootAsync({
@@ -15,9 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
               password: configService.get('POSTGRES_PASSWORD'),
               database: configService.get('POSTGRES_DB'),
               entities: [
-                // __dirname + '/../**/*.entity.ts',
-                __dirname + '../entities/*.entity.ts',
-
+                Comment
               ],
               synchronize: true,
             })
