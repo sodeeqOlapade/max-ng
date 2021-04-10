@@ -15,12 +15,12 @@ export class CreateCommentDto {
     body: string;
 
     @ApiProperty({
-      name: "commenterIpAddress",
+      name: "movie",
       type: String,
-      description: "Commenter's IP address",
-      required: true,
+      description: "The Movie a comment belongs to",
+      required: false,
     })
     @IsString()
-    commenterIpAddress: string;
+    movie: string;
 
 }

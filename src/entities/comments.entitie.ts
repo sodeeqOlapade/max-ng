@@ -9,7 +9,10 @@ class Comment {
   public body: string;
  
   @Column()
-  public commenterIpAddress: string;
+  public clientIp: string;
+
+  @Column()
+  public movie: string;
 
   @CreateDateColumn({ update: false, name: "create_date" })
   public createDate: Date;

@@ -5,7 +5,8 @@ export class GetCommentDto {
   constructor(data: any){
     this.id = data.id;
     this.body = data.body;
-    this.commenterIpAddress = data.commenterIpAddress;
+    this.clientIp = data.clientIp;
+    this.movie = data.movie;
   }
 
     @ApiProperty({
@@ -23,11 +24,19 @@ export class GetCommentDto {
       })
     body: string;
 
+
     @ApiProperty({
-      name: "commenterIpAddress",
+      name: "movie",
+      type: String,
+      description: "Comment's Movie",
+    })
+    movie: string;
+
+    @ApiProperty({
+      name: "clientIp",
       type: String,
       description: "Commenter's IP address",
     })
-    commenterIpAddress: string;
+    clientIp: string;
 
 }

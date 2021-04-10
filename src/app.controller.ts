@@ -8,8 +8,10 @@ import { customResponse, ICustomResponse } from './utils/response';
 import { createCommentSchema } from './dto/comment.schema';
 import { JoiValidationPipe } from './utils/joi-validation.pipe';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { GetCommentDto } from './dto/get-branch.dto';
+import { GetCommentDto } from './dto/get-comment.dto';
 
+
+const get_ip = require('ipware')().get_ip;
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -64,7 +66,9 @@ export class AppController {
   @Post("comments")
   @ApiResponse({ status: HttpStatus.CREATED, type: GetCommentDto, description: "Branch successfully created!" })
   async createComment(@Body(new JoiValidationPipe(createCommentSchema)) createCommentDto: CreateCommentDto, @Req() request: Request): Promise<ICustomResponse>{
-    const newComment: Comment = await this.appService.createComment(createCommentDto);
+    const {clientIp} = get_ip(request);
+    console.log('clientIp: ', clientIp);
+    const newComment: Comment = await this.appService.createComment({...createCommentDto, clientIp});
     return customResponse(HttpStatus.OK, "Successful", new GetCommentDto(newComment));
   }
 
