@@ -1,5 +1,6 @@
-# MAX-NG BACKEND ENGINEERING TEST BUILT ON SWAPI API WITH the [nestjs](https://github.com/nestjs/nest) framework (Nodejs) and Postgresql for persistence layer
+# MAX-NG BACKEND ENGINEERING TEST BUILT ON SWAPI API
 
+## Live link [HERE](https://max-ng-starwars.herokuapp.com/api)
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
