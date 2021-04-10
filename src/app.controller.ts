@@ -1,6 +1,7 @@
-import { Controller, Get, HttpStatus } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, HttpStatus, Req } from '@nestjs/common';
+import { ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
+import { Request } from "express";
 import { GetCharactersDto } from './dto/get-characters.dto';
 import { GetMoviesDto } from './dto/get-movies.dto';
 import { customResponse, ICustomResponse } from './utils/response';
@@ -20,13 +21,49 @@ export class AppController {
   }
 
   @Get("characters")
+  @ApiQuery({
+    name: "filter",
+    description: "filter by gender",
+    required: false,
+    type: String,
+    enum: ['Female', 'Male']
+  })
+
+  @ApiQuery({
+    name: "sort",
+    description: "Sort by height",
+    required: false,
+    type: Number,
+  })
+
+  @ApiQuery({
+    name: "order",
+    description: "Order resources",
+    required: false,
+    type: String,
+    enum: ['ASCD', 'DESC'],
+  })
+
   @ApiResponse({ status: HttpStatus.OK, type: GetCharactersDto, description: "Characters successfully retrieved!" })
-  async getCharacters(): Promise<ICustomResponse> {
-    const characters =  await this.appService.getCharacters();
+  async getCharacters(@Req() request: Request): Promise<ICustomResponse> {
+    console.log('...in', request.query)
+    const characters =  await this.appService.getCharacters(request.query);
     // console.log(characters)
     return customResponse(HttpStatus.OK, "Successful", {
       count: characters.length,
       characters: characters.map(character => new GetCharactersDto(character)),
     })
   }
+
+
+  // @Get("characters")
+  // @ApiResponse({ status: HttpStatus.OK, type: GetCharactersDto, description: "Characters successfully retrieved!" })
+  // async getCharacters(): Promise<ICustomResponse> {
+  //   const characters =  await this.appService.getCharacters();
+  //   // console.log(characters)
+  //   return customResponse(HttpStatus.OK, "Successful", {
+  //     count: characters.length,
+  //     characters: characters.map(character => new GetCharactersDto(character)),
+  //   })
+  // }
 }
