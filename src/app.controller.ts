@@ -50,7 +50,9 @@ export class AppController {
     const characters =  await this.appService.getCharacters(request.query);
     // console.log(characters)
     return customResponse(HttpStatus.OK, "Successful", {
-      count: characters.length,
+      totalCount: characters.length,
+      totalHeightIncm: characters.map(character => +character.height).reduce((a, b) => a + b, 0),
+      totalHeightInft: characters.map(character => +character.height).reduce((a, b) => a + b, 0)/30.48,
       characters: characters.map(character => new GetCharactersDto(character)),
     })
   }
