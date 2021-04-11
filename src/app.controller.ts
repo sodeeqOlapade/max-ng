@@ -53,10 +53,16 @@ export class AppController {
   @ApiResponse({ status: HttpStatus.OK, type: GetCharactersDto, description: "Characters successfully retrieved!" })
   async getCharacters(@Req() request: Request): Promise<ICustomResponse> {
     const characters =  await this.appService.getCharacters(request.query);
+    const count = characters.map(character => {
+      if(character.height === 'unknown'){
+        return 0;
+      }
+      return +character.height
+    }).reduce((a, b) => a + b, 0);
     return customResponse(HttpStatus.OK, "Successful", {
       totalCount: characters.length,
-      totalHeightIncm: characters.map(character => +character.height).reduce((a, b) => a + b, 0),
-      totalHeightInft: characters.map(character => +character.height).reduce((a, b) => a + b, 0)/30.48,
+      totalHeightIncm: count,
+      totalHeightInft: count/30.48,
       characters: characters.map(character => new GetCharactersDto(character)),
     })
   }
