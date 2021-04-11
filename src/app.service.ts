@@ -20,9 +20,17 @@ export class AppService {
     try {
       const requestUrl = `${this.BASE_URL}films/`
       const response = await axios.get(requestUrl);
-      return response.data.results.sort(function(a, b) {
+      let sortedResponse =  response.data.results.sort(function(a, b) {
         return new Date(b.release_date).valueOf() - new Date(a.release_date).valueOf();
       });
+
+      sortedResponse = await sortedResponse.map(async (movie) => {
+        let current = await this.commentRepository.find({movie: movie.episode_id});
+        movie['comments'] = [...current];
+        movie['commentsCount'] = [...current].length;
+        return movie;
+      })
+      return sortedResponse;
     } catch (error) {
       console.error(error);
     }

@@ -20,9 +20,11 @@ export class AppController {
   @ApiResponse({ status: HttpStatus.OK, type: GetMoviesDto, description: "Movies successfully retrieved!" })
   async getMovies(): Promise<ICustomResponse> {
     const movies =  await this.appService.getMovies();
-    return customResponse(HttpStatus.OK, "Successful", {
-      count: movies.length,
-      movies: movies.map(movie => new GetMoviesDto(movie))
+   return Promise.all(movies).then((movies) => {
+      return customResponse(HttpStatus.OK, "Successful", {
+        count: movies.length,
+        movies: movies.map(movie => new GetMoviesDto(movie))
+      })
     })
   }
 
