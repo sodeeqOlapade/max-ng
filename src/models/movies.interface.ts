@@ -15,4 +15,5 @@ export interface IMovies{
     url: string;
 
     commentCount?: number;
+    comments?: string[];
 }

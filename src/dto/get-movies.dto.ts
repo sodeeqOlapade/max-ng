@@ -7,7 +7,8 @@ export class GetMoviesDto {
     this.episodeId = data.episode_id;
     this.title = data.title;
     this.openingCrawl = data.opening_crawl;
-    this.commentCount = data.commentCount || 0;
+    this.commentCount = data.commentCount;
+    this.comments = data.comments;
     this.realeaseDate = data.release_date;
 
   }
@@ -32,6 +33,13 @@ export class GetMoviesDto {
       description: "Movie's opening crawl",
     })
     openingCrawl: string;
+
+    @ApiProperty({
+      name: "comments",
+      type: [String],
+      description: "Movies comments",
+    })
+    comments: object;
 
     @ApiProperty({
       name: "commentCount",
